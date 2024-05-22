@@ -9,6 +9,7 @@ typedef struct ip
 }ip;
 
 //typedef struct ip ip;
+void init_ipAddr(char *adresse);
 
 void cpy_AdrIp(ip const *ip1, ip *ip2);
 
