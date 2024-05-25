@@ -9,11 +9,12 @@ typedef struct mac
 } mac;
 
 //typedef struct mac mac;
+mac* init_macAddr(char *adresse);
 
-void cpy_AdrMac(mac const *mac1, mac *mac2);
+void cpy_AdrMac(mac *self, mac *mac2);
 
-bool equals_AdrMac(mac const *mac1, mac const *mac2);
+bool equals_AdrMac(mac const *self, mac const *mac2);
 
-uint8_t* compare_adrMac(mac const *mac1, mac const *mac2);
+uint8_t* compare_adrMac(mac const *self, mac const *mac2);
 
-uint8_t* get_adrMac(mac const* mac);
+uint8_t* get_adrMac(mac const* self);
