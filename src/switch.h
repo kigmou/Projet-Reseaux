@@ -12,8 +12,8 @@ typedef struct Switch {
     unsigned int nbPorts;
     long int priorite;
     //tableCommutation tbCommutation;
-}Switch;
+} Switch;
 
-Switch* init_switch(char *config);
+int init_switch(Switch *sw, const char *input);
 void afficheSwitch(Switch* sw);
 void freeSwitch(Switch* sw);

@@ -1,63 +1,35 @@
+#include "switch.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "switch.h"
+int init_switch(Switch *sw, const char *input) {
+    if (sw == NULL || input == NULL) {
+        return -1; 
+    }
 
-Switch* init_switch(char *config) {
-    //2;01:45:23:a6:f7:ab;8;1024
-    Switch *sw = (Switch*)malloc(sizeof(Switch));
-    if (sw == NULL) {
-        free(sw);
-        sw = NULL;
-        return NULL;
-    }
-    char* configCopy = strdup(config); 
-    printf(configCopy);
-    printf("\n");
-    if (configCopy == NULL) {
-        free(sw);
-        return NULL;
-    }
-    char* token = strtok(configCopy, ";");
-    if (token == NULL) {
-        free(sw);
-        sw = NULL;
-        return NULL;
-    }
-    
-    sw->type = (enum MachineType) atoi(token);
+    char input_copy[100];
+    strncpy(input_copy, input, sizeof(input_copy));
+    input_copy[sizeof(input_copy) - 1] = '\0';
+
+    char *token = strtok(input_copy, ";");
+    if (token == NULL) return -1;
+    sw->type = (enum MachineType)atoi(token);
+
     token = strtok(NULL, ";");
-    printf(token);
-    printf("\n");
+    if (token == NULL) return -1;
+    sw->addrMac = init_macAddr(token);
+    if (sw->addrMac == NULL) return -1; 
 
-    if (token == NULL) {
-        free(sw);
-        sw = NULL;
-        return NULL;
-    }
-    char* tokenCpy;
-    strcpy(tokenCpy, token); 
-    sw->addrMac = init_macAddr(tokenCpy);
-    printf("token");
     token = strtok(NULL, ";");
+    if (token == NULL) return -1;
+    sw->nbPorts = atoi(token);
 
-    sw->nbPorts = (unsigned int) atoi(token);
     token = strtok(NULL, ";");
-    printf(token);
-    printf("\n");
+    if (token == NULL) return -1;
+    sw->priorite = atol(token);
 
-    sw->priorite = (long int) atoi(token);
-    token = strtok(NULL, ";");
-    printf(token);
-    printf("\n");
-
-    if (token!=NULL) {
-        free(sw);
-        sw = NULL;
-        return NULL;
-    }
-    return sw;
+    return 0; 
 }
 
 void afficheSwitch(Switch* sw) {
@@ -66,7 +38,9 @@ void afficheSwitch(Switch* sw) {
         printf("Type: %d\n", sw->type);
         printf("Nombre de Ports: %u\n", sw->nbPorts);
         printf("Priorité: %ld\n", sw->priorite);
-        // Afficher les informations de tbCommutation si nécessaire
+        printf("Adresse mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
+               sw->addrMac->adresse[0], sw->addrMac->adresse[1], sw->addrMac->adresse[2],
+               sw->addrMac->adresse[3], sw->addrMac->adresse[4], sw->addrMac->adresse[5]);
     } else {
         printf("Switch is NULL\n");
     }
@@ -74,7 +48,8 @@ void afficheSwitch(Switch* sw) {
 
 void freeSwitch(Switch* sw) {
     if (sw != NULL) {
-        // Libérer la mémoire de tbCommutation si nécessaire
-        free(sw);
+        if (sw->addrMac != NULL) {
+            free(sw->addrMac);
+        }
     }
 }

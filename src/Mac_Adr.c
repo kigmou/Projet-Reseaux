@@ -1,59 +1,45 @@
-#include <stdio.h>
+#include "Mac_Adr.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-#include "Mac_Adr.h"
+mac* init_macAddr(const char *adresse) {
+    mac *new_mac = (mac*)malloc(sizeof(mac));
+    if (new_mac == NULL) {
+        return NULL; 
+    }
 
-mac* init_macAddr(char *adresse)
-{
-    mac *AdrMac = malloc(sizeof(mac));
-    if (AdrMac == NULL) {
-        return NULL;
+    for (int i = 0; i < 6; i++) {
+        new_mac->adresse[i] = hex_to_byte_MAC(adresse + 3 * i);
     }
-    printf(adresse);
 
-    char* configCopy = strdup(adresse); 
-    if (configCopy == NULL) {
-        free(AdrMac);
-        return NULL;
-    }
-    char* token = strtok(configCopy, ":");
-
-    int i = 0;
-    while (token != NULL) {
-        AdrMac->adresse[i] = (uint8_t) atoi(token);
-        i++;
-        token = strtok(NULL, ":");
-    }
-    if (i != 6) {
-        free(AdrMac);
-        AdrMac = NULL;
-        return NULL;
-    }
-    return AdrMac;
+    return new_mac;
 }
 
-void cpy_AdrMac(mac *self, mac *mac2)
-{
-    mac2 = self;
-    return;
+void cpy_AdrMac(mac *self, const mac *mac2) {
+    if (self != NULL && mac2 != NULL) {
+        memcpy(self->adresse, mac2->adresse, 6 * sizeof(uint8_t));
+    }
 }
 
-bool equals_AdrMac(mac const *self, mac const *mac2)
-{
-
-    return (self==mac2);
+bool equals_AdrMac(const mac *self, const mac *mac2) {
+    if (self == NULL || mac2 == NULL) {
+        return false;
+    }
+    return memcmp(self->adresse, mac2->adresse, 6 * sizeof(uint8_t)) == 0;
 }
 
-uint8_t* compare_adrMac(mac const *self, mac const *mac2)
-{
-    if(get_adrMac(self)<get_adrMac(mac2)) return -1;
-    else if(equals_AdrMac(self, mac2)) return 0;
-    else return 1;    
+uint8_t* compare_adrMac(const mac *self, const mac *mac2) {
+    // Implémentation si nécessaire
+    return NULL;
 }
 
-uint8_t* get_adrMac(mac const* self)
-{
-    uint8_t tab[4];
-    return tab;
+uint8_t* get_adrMac(mac* self) {
+    return (self != NULL) ? self->adresse : NULL;
+}
+
+uint8_t hex_to_byte_MAC(const char *hex) {
+    uint8_t byte;
+    sscanf(hex, "%2hhx", &byte);
+    return byte;
 }
