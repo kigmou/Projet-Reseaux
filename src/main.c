@@ -7,5 +7,9 @@
 
 int main()
 {
-    return EXIT_SUCCESS;
+    switch *mySwitch = createSwitch(SWITCH, 4, 10);
+    afficheSwitch(mySwitch);
+    freeSwitch(mySwitch);
+    
+    return 0;
 }

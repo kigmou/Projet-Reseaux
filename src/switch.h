@@ -1,14 +1,25 @@
 #pragma once
+#ifndef SWITCH_H
+#define SWITCH_H
 
 #include<stdio.h>
 #include<stdint.h>
 
-//typedef struct switch switch;
+typedef enum {
+    STATION = 1,
+    SWITCH = 2
+} typeMachine;
+
 
 typedef struct {
-    typeMachine type = 2;
+    typeMachine type;
     unsigned int nbPorts;
     long int priorite;
-    tableCommutation tbCommutation;
+    //tableCommutation tbCommutation;
 } switch;
 
+switch* createSwitch(typeMachine type, unsigned int nbPorts, long int priorite);
+void afficheSwitch(switch* sw);
+void freeSwitch(switch* sw);
+
+#endif // SWITCH_H
