@@ -2,6 +2,7 @@
 
 #include "Mac_Adr.h"
 #include "machine.h"
+#include "tableCommutation.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -11,7 +12,7 @@ typedef struct Switch {
     mac *addrMac;
     unsigned int nbPorts;
     long int priorite;
-    //tableCommutation tbCommutation;
+    tableCommutation tblCommutation;
 } Switch;
 
 int init_switch(Switch *sw, const char *input);

@@ -4,6 +4,11 @@
 #include <string.h>
 
 int init_switch(Switch *sw, const char *input) {
+    sw->tblCommutation = (tableCommutation*)malloc(sizeof(tableCommutation));
+    if (sw->tblCommutation == NULL) {
+        return -1; // Erreur d'allocation de mémoire
+    }
+    init_tblCommut(sw->tblCommutation);
     if (sw == NULL || input == NULL) {
         return -1; 
     }
@@ -41,6 +46,7 @@ void afficheSwitch(Switch* sw) {
         printf("Adresse mac: %02x:%02x:%02x:%02x:%02x:%02x\n",
                sw->addrMac->adresse[0], sw->addrMac->adresse[1], sw->addrMac->adresse[2],
                sw->addrMac->adresse[3], sw->addrMac->adresse[4], sw->addrMac->adresse[5]);
+        afficheTblCommut(&sw->tblCommutation);
     } else {
         printf("Switch is NULL\n");
     }
@@ -49,7 +55,9 @@ void afficheSwitch(Switch* sw) {
 void freeSwitch(Switch* sw) {
     if (sw != NULL) {
         if (sw->addrMac != NULL) {
+            freeTblCommut(&sw->tblCommutation);
             free(sw->addrMac);
+            free(sw->tblCommutation);
         }
     }
 }
