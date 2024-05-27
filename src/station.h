@@ -12,10 +12,11 @@
 
 typedef struct station{
     enum MachineType type;
-    mac addrMac;
-    ip addrIP;
+    mac *addrMac;
+    ip *addrIp;
 }station;
 
+station* init_station(char *config);
 machineType get_type_station(station *station);
 mac get_mac_station(station *station);
 ip get_ip_station(station *station);
