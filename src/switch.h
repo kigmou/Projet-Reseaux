@@ -12,7 +12,7 @@ typedef struct Switch {
     mac *addrMac;
     unsigned int nbPorts;
     long int priorite;
-    tableCommutation tblCommutation;
+    tableCommutation * tblCommutation;
 } Switch;
 
 int init_switch(Switch *sw, const char *input);

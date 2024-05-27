@@ -15,10 +15,10 @@ int init_tblCommut(tableCommutation *tblC)
 }
 void afficheTblCommut(tableCommutation* tblC)
 {
-    printf(" Addresse mac | numPort | Ttl \n");
+    printf("    Addresse mac   | numPort | Ttl \n");
     for(int i=0; i< tblC->nb_relation; i++)
     {
-        printf(" %s | %s | %s \n", tblC->addrMac[tblC->nb_relation], tblC->numPort[tblC->nb_relation], tblC->ttl[tblC->nb_relation]);
+        printf(" %02x:%02x:%02x:%02x:%02x:%02x |    %u    |  %u \n",tblC->addrMac[i]->adresse[0], tblC->addrMac[i]->adresse[1], tblC->addrMac[i]->adresse[2], tblC->addrMac[i]->adresse[3], tblC->addrMac[i]->adresse[4], tblC->addrMac[i]->adresse[5], tblC->numPort[i], tblC->ttl[i]);
     }
 }
 void freeTblCommut(tableCommutation* tblC)
@@ -26,7 +26,6 @@ void freeTblCommut(tableCommutation* tblC)
     free(tblC->addrMac);
     free(tblC->numPort);
     free(tblC->ttl);
-    free(tblC);
 }
 bool ajouter_relationConfig(tableCommutation *tblc, const char *input, mac *addr)
 {
@@ -68,6 +67,12 @@ bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsi
                 tblc->ttl = t;
                 tblc->relations_capacite = tblc->relations_capacite * 2;
             }
+            else
+            {
+                free(a);
+                free(n);
+                free(t);
+            }
         }
         if (tblc->nb_relation < tblc->relations_capacite)
         {
@@ -75,6 +80,9 @@ bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsi
             tblc->numPort[tblc->nb_relation] = numP;
             tblc->ttl[tblc->nb_relation] = TTL;
             tblc->nb_relation++;
+            printf("je suis la \n\n");
+            printf("%02x %u %u\n\n", addr->adresse[0], numP, TTL);
+            printf(" %u %u\n\n", tblc->numPort[tblc->nb_relation], tblc->ttl[tblc->nb_relation]);
             return true;
         }
     }

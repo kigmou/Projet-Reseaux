@@ -13,16 +13,17 @@ int main() {
         printf("Le switch n'a pas pu être initialisé.\n");
     }
 
-    char *inputM1="130.79.80.21";
-    char *inputM2="130.79.80.27";
-    char *inputM3="130.79.80.42";
-    mac *mac1 =init_macAddr(inputM1);
-    mac *mac2 =init_macAddr(inputM2);
-    mac *mac3 =init_macAddr(inputM3);
-    tableCommutation *tbl = sw->tblCommutation;
-    ajouter_relationConfig(tbl,"0;1;4", &mac1);
-    ajouter_relationConfig(tbl,"0;2;19", &mac2);
-    ajouter_relationConfig(tbl,"0;3;4", &mac3);
+    char *inputM1="54:d6:a6:82:c5:23";
+    char *inputM2="c8:69:72:5e:43:af";
+    char *inputM3="77:ac:d6:82:12:23";
+    mac *mac1 = init_macAddr(inputM1);
+    mac *mac2 = init_macAddr(inputM2);
+    mac *mac3 = init_macAddr(inputM3);
+    tableCommutation *tbl = sw.tblCommutation;
+    ajouter_relationConfig(tbl,"0;1;4", mac1);
+    ajouter_relationConfig(tbl,"0;2;19", mac2);
+    ajouter_relationConfig(tbl,"0;3;4", mac3);
+    
     afficheSwitch(&sw);
     
     char *input2 = "1;54:d6:a6:82:c5:23;130.79.80.21";
@@ -47,7 +48,7 @@ int main() {
     station st3;
 
     if (init_Station(&st3, input4) == 0) {
-        printf("Station initialisé ! \n");
+        printf("Station initialisé ! \n \n");
     } else {
         printf("La station n'a pas pu être initialisé.\n");
     }
@@ -59,7 +60,6 @@ int main() {
     freeStation(&st);
     freeStation(&st2);
     freeStation(&st3);
-
     freeSwitch(&sw);
     return 0;
 }
