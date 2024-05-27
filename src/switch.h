@@ -1,25 +1,19 @@
 #pragma once
-#ifndef SWITCH_H
-#define SWITCH_H
 
-#include<stdio.h>
-#include<stdint.h>
+#include "Mac_Adr.h"
+#include "machine.h"
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdint.h>
 
-typedef enum {
-    STATION = 1,
-    SWITCH = 2
-} typeMachine;
-
-
-typedef struct {
-    typeMachine type;
+typedef struct Switch {
+    enum MachineType type;
+    mac *addrMac;
     unsigned int nbPorts;
     long int priorite;
     //tableCommutation tbCommutation;
-} switch;
+}Switch;
 
-switch* createSwitch(typeMachine type, unsigned int nbPorts, long int priorite);
-void afficheSwitch(switch* sw);
-void freeSwitch(switch* sw);
-
-#endif // SWITCH_H
+Switch* init_switch(char *config);
+void afficheSwitch(Switch* sw);
+void freeSwitch(Switch* sw);

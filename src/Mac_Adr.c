@@ -10,16 +10,22 @@ mac* init_macAddr(char *adresse)
     if (AdrMac == NULL) {
         return NULL;
     }
+    printf(adresse);
 
-    char* token = strtok(adresse, ":");
+    char* configCopy = strdup(adresse); 
+    if (configCopy == NULL) {
+        free(AdrMac);
+        return NULL;
+    }
+    char* token = strtok(configCopy, ":");
+
     int i = 0;
     while (token != NULL) {
         AdrMac->adresse[i] = (uint8_t) atoi(token);
         i++;
         token = strtok(NULL, ":");
     }
-
-    if (i != 4) {
+    if (i != 6) {
         free(AdrMac);
         AdrMac = NULL;
         return NULL;

@@ -7,9 +7,9 @@
 
 int main()
 {
-    switch *mySwitch = createSwitch(SWITCH, 4, 10);
+    char *config = "2;01:45:23:a6:f7:ab;8;1024";
+    Switch *mySwitch = init_switch(config);
     afficheSwitch(mySwitch);
     freeSwitch(mySwitch);
-    
     return 0;
 }
