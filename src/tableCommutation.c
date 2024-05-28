@@ -51,7 +51,7 @@ void freeTblCommut(tableCommutation* tblC)
 }*/
 bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int TTL)
 {
-    if (!existe_relation(tblc, addr, numP, TTL))
+    if (!existe_relation(tblc, addr, TTL))
     {
         if (tblc->nb_relation == tblc->relations_capacite)
         {
@@ -82,11 +82,11 @@ bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int TTL)
     }
     return false;
 } 
-bool existe_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsigned int TTL)
+bool existe_relation(tableCommutation *tblc, mac *addr, unsigned int TTL)
 {
     for (size_t i = 0; i < tblc->nb_relation; i++)
     {   
-        if (tblc->numPort>=numP && tblc->addrMac[i] == addr && tblc->ttl[i] == TTL)
+        if (tblc->addrMac[i] == addr && tblc->ttl[i] == TTL)
             return true;
     }
     return false;

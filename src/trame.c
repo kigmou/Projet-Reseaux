@@ -37,6 +37,49 @@ mac* destination(trame const *tr)
 
 bool envoyer_trame(trame const *tr, graphe *g)
 {
-    
+    bool visite[g->ordre];
+    for(int j=0; j<g->ordre; j++)
+    {
+        visite[j]=false;
+    }
+    bool trouve=false;
+    size_t indexDep = -1;
+    size_t indexArr = -1;
+    for(int i=0; i<g->ordre; i++)
+    {
+        if(equals(g->listeMachine[i],tr->source))
+        {
+            indexDep=i;
+        }
+        if(equals(g->listeMachine[i],tr->destination))
+        {
+            indexArr = i;
+        }
+        if(indexArr!=indexDep!=-1)
+        {
+            break;
+        }
+    }
+    visite_composante_connexe(g, indexDepUltime, indexDep, indexArr, visite, trouve);
     return false;
+}
+
+void visite_composante_connexe(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve)
+{
+    sommet sa[25];
+    if(!visite[s1] || !trouve)
+    {
+        visite[s1]=true;
+        if(s1==s2)
+        {
+            trouve=true;
+        }
+        else if(g->listeMachine[s1])
+            sommets_adjacents(g, s, sa);
+            for(int i = 0; i<degre(g,s); i++)
+            {
+                visite_composante_connexe(g, sa[i], visite);
+            }
+    }
+    return;
 }

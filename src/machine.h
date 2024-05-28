@@ -8,6 +8,7 @@ typedef enum MachineType{
 typedef struct machine
 {
     enum MachineType type;
+    int numMachine;
     void* ptr;
 }machine;
 

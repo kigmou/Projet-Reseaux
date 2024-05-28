@@ -2,6 +2,8 @@
 
 void init_graphe(graphe *g)
 {
+    g->listeMachine = malloc(sizeof(machine) * 10);
+    g->machine_capacite = 10;
     g->ordre = 0;
     g->aretes = malloc(sizeof(arete) * 8);
     g->aretes_capacite = 8;
@@ -27,9 +29,26 @@ size_t nb_aretes(graphe const *g)
     return g->nb_aretes;
 }
 
-void ajouter_sommet(graphe *g)
+void ajouter_sommet(graphe *g, machine *m)
 {
+        if (g->ordre == g->machine_capacite)
+        {
+            void *p = realloc(g->listeMachine, sizeof(machine) * g->machine_capacite * 2);
+            if (p)
+            {
+                g->aretes = p;
+                g->machine_capacite = g->machine_capacite * 2;
+            }
+        }
+        if (g->aretes_capacite > g->nb_aretes)
+        {
+            g->aretes[g->nb_aretes] = a;
+            g->nb_aretes++;
+            return;
+        }
+    }
     g->ordre++;
+    return;
 }
 
 static arete swap_arete(arete a)

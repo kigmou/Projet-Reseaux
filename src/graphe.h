@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <machine.h>
 
-typedef size_t sommet;
+typedef machine sommet;
 
 typedef struct arete
 {
@@ -15,6 +16,8 @@ typedef struct arete
 
 typedef struct graphe
 {
+    sommet *listeMachine;
+    size_t machine_capacite;
     size_t ordre;
     arete *aretes;
     size_t aretes_capacite;

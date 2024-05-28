@@ -18,4 +18,4 @@ int init_tblCommut(tableCommutation *tblC);
 void afficheTblCommut(tableCommutation* tblC);
 void freeTblCommut(tableCommutation* tblC);
 bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int TTL);
-bool existe_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsigned int TTL);
+bool existe_relation(tableCommutation *tblc, mac *addr, unsigned int TTL);
