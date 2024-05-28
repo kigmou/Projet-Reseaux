@@ -2,72 +2,106 @@
 
 void init_graphe(graphe *g)
 {
-    // initialise les champs internes du graphe g
-    // - allocation d'un tableau d'arêtes de capacité initiale 8
-    // - le graphe ne contient initialement ni sommet ni arête
+    g->ordre = 0;
+    g->aretes = malloc(sizeof(arete) * 8);
+    g->aretes_capacite = 8;
+    g->nb_aretes = 0;
 }
 
 void free_graphe(graphe *g)
 {
-    // libère la mémoire qui avait été allouée dans la fonction init_graphe
-    // réinitialise les champs internes du graphe g
+    g->ordre = 0;
+    free(g->aretes);
+    g->aretes = NULL;
+    g->aretes_capacite = 0;
+    g->nb_aretes = 0;
 }
 
 size_t ordre(graphe const *g)
 {
-    return 0;
+    return g->ordre;
 }
 
 size_t nb_aretes(graphe const *g)
 {
-    return 0;
+    return g->nb_aretes;
 }
 
 void ajouter_sommet(graphe *g)
 {
+    g->ordre++;
 }
 
-// une fonction locale "static arete swap_sommets(arete a)" pourra être utile
-// cette fonction retourne une nouvelle arête dont les sommets sont les même que l'arête reçue mais inversés
+static arete swap_arete(arete a)
+{
+    return (arete){a.s2, a.s1};
+}
 
 bool existe_arete(graphe const *g, arete a)
 {
-    // retourne true si l'arête a est contenue dans le graphe g, false sinon
-    // /!\ l'arête (s1,s2) et l'arête (s2,s1) sont considérées équivalentes
-
+    if (a.s1 > a.s2)
+        a = swap_arete(a);
+    for (size_t i = 0; i < nb_aretes(g); i++)
+    {
+        arete aa = g->aretes[i];
+        if (a.s1 == aa.s1 && a.s2 == aa.s2)
+            return true;
+    }
     return false;
 }
 
 bool ajouter_arete(graphe *g, arete a)
 {
-    // l'arête a n'est ajoutée que si les conditions suivantes sont remplies :
-    //  - les sommets s1 et s2 de a existent dans g
-    //  - les sommets s1 et s2 de a sont distincts
-    //  - l'arête a n'existe pas dans g
-
-    // /!\ si la capacité actuelle du tableau d'arêtes n'est pas suffisante,
-    // /!\ il faut le réallouer.
-    // /!\ on peut par exemple doubler la capacité du tableau actuel.
-
-    // retourne true si l'arête a bien été ajoutée, false sinon
-
+    if (a.s1 >= ordre(g) || a.s2 >= ordre(g) || a.s1 == a.s2)
+        return false;
+    if (a.s1 > a.s2)
+        a = swap_arete(a);
+    if (!existe_arete(g, a))
+    {
+        if (g->nb_aretes == g->aretes_capacite)
+        {
+            void *p = realloc(g->aretes, sizeof(arete) * g->aretes_capacite * 2);
+            if (p)
+            {
+                g->aretes = p;
+                g->aretes_capacite = g->aretes_capacite * 2;
+            }
+        }
+        if (g->aretes_capacite > g->nb_aretes)
+        {
+            g->aretes[g->nb_aretes] = a;
+            g->nb_aretes++;
+            return true;
+        }
+    }
     return false;
 }
 
 size_t index_arete(graphe const *g, arete a)
 {
-    // retourne l'index de l'arête au sein du tableau d'arêtes de g si l'arête a existe dans g,
-    // la valeur UNKNOWN_INDEX sinon
-
+    if (a.s1 > a.s2)
+        a = swap_arete(a);
+    for (size_t i = 0; i < nb_aretes(g); i++)
+    {
+        arete aa = g->aretes[i];
+        if (a.s1 == aa.s1 && a.s2 == aa.s2)
+            return i;
+    }
     return UNKNOWN_INDEX;
 }
 
 size_t sommets_adjacents(graphe const *g, sommet s, sommet sa[])
 {
-    // remplit le tableau sa avec les sommets adjacents de s dans g
-    // et retourne le nombre de sommets ainsi stockés
-    // (on suppose que s fait bien partie du graphe g)
-    // (le tableau sa est supposé assez grand pour contenir les sommets adjacents de s)
-
-    return 0;
+    if (s >= ordre(g))
+        return 0;
+    size_t nb = 0;
+    for (size_t i = 0; i < nb_aretes(g); i++)
+    {
+        arete a = g->aretes[i];
+        if (a.s1 == s)
+            sa[nb++] = a.s2;
+        else if (a.s2 == s)
+            sa[nb++] = a.s1;
+    }
+    return nb;
 }

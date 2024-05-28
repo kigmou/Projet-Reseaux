@@ -7,10 +7,16 @@ typedef size_t sommet;
 
 typedef struct arete
 {
+    sommet s1;
+    sommet s2;
 } arete;
 
 typedef struct graphe
 {
+    size_t ordre;
+    arete *aretes;
+    size_t aretes_capacite;
+    size_t nb_aretes;
 } graphe;
 
 static const size_t UNKNOWN_INDEX = -1;
