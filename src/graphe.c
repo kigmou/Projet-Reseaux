@@ -29,7 +29,7 @@ size_t nb_aretes(graphe const *g)
     return g->nb_aretes;
 }
 
-void ajouter_sommet(graphe *g, machine *m)
+void ajouter_sommet(graphe *g, sommet m)
 {
     if (g->ordre == g->machine_capacite)
     {
@@ -67,6 +67,7 @@ bool existe_arete(graphe const *g, arete a)
 }
 bool init_Arete(graphe *g, char * input)
 {
+
     if (input == NULL) {
         return -1; 
     }
@@ -88,8 +89,8 @@ bool init_Arete(graphe *g, char * input)
     unsigned int poid = (unsigned int)atoi(token);
 
     arete *a = malloc(sizeof(arete));
-    a->s1 = *g->listeMachine[IndexNumDepart];
-    a->s2 = *g->listeMachine[IndexNumArrive];
+    a->s1 = g->listeMachine[IndexNumDepart];
+    a->s2 = g->listeMachine[IndexNumArrive];
     a->poids = poid;
 
     return ajouter_arete(g, *a);
@@ -97,8 +98,13 @@ bool init_Arete(graphe *g, char * input)
 
 bool ajouter_arete(graphe *g, arete a)
 {
+    printf("On est la________ ordre = %lu \n",ordre(g));
+    printf("a.s1.numMachine = %lu\n",a.s1.numMachine);
+    printf("a.s2.numMachine = %lu\n",a.s2.numMachine);
     if (a.s1.numMachine >= ordre(g) || a.s2.numMachine >= ordre(g) || a.s1.numMachine == a.s2.numMachine)
         return false;
+    printf("On est la________V2");
+
     if (a.s1.numMachine > a.s2.numMachine)
         a = swap_arete(a);
     if (!existe_arete(g, a))
@@ -135,7 +141,7 @@ size_t index_arete(graphe const *g, arete a)
     return UNKNOWN_INDEX;
 }
 
-size_t sommets_adjacents(graphe const *g, sommet s, sommet sa[])
+size_t sommets_adjacents(graphe const *g, sommet s, size_t sa[])
 {
     if (s.numMachine >= ordre(g))
         return 0;
@@ -144,9 +150,9 @@ size_t sommets_adjacents(graphe const *g, sommet s, sommet sa[])
     {
         arete a = g->aretes[i];
         if (a.s1.numMachine == s.numMachine)
-            sa[nb++] = a.s2;
+            sa[nb++] = a.s2.numMachine;
         else if (a.s2.numMachine == s.numMachine)
-            sa[nb++] = a.s1;
+            sa[nb++] = a.s1.numMachine;
     }
     return nb;
 }
@@ -167,5 +173,14 @@ size_t degre(graphe const *g, sommet s)
         }
     }
     return compteur;
+}
+
+void afficheArrete(graphe *g)
+{
+    for(size_t i=0; i<g->nb_aretes; i++)
+    {
+        printf("Arete : %lu %lu %u \n", g->aretes[i].s1.numMachine, g->aretes[i].s2.numMachine, g->aretes[i].poids);
+    }
+    printf("nombre d'aretes : %lu \n",g->nb_aretes);
 }
 

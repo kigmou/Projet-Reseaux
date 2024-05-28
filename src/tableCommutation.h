@@ -7,7 +7,8 @@
 
 typedef struct tableCommutation {
     mac **addrMac;
-    unsigned int numPort; ////////////A CHANGER PARTOUT
+    unsigned int numPort;
+    unsigned int *numMachineLie; 
     unsigned int *ttl;
     size_t relations_capacite;
     size_t nb_relation;
@@ -17,5 +18,5 @@ typedef struct tableCommutation {
 int init_tblCommut(tableCommutation *tblC);
 void afficheTblCommut(tableCommutation* tblC);
 void freeTblCommut(tableCommutation* tblC);
-bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int TTL);
+bool ajouter_relation(tableCommutation *tblc, mac *addr, size_t nmMach, unsigned int TTL);
 bool existe_relation(tableCommutation *tblc, mac *addr, unsigned int TTL);

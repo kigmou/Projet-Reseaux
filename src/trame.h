@@ -30,4 +30,4 @@ mac* source(trame const *tr);
 mac* destination(trame const *tr);
 
 bool envoyer_trame(trame const *tr, graphe *g);
-void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve);
+void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve, size_t oldS1);

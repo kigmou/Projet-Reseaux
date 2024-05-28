@@ -7,6 +7,7 @@
 #include "graphe.h"
 #include "station.h"
 #include "switch.h"
+#include "trame.h"
 #include <string.h>
 
 
@@ -15,10 +16,11 @@
 
 typedef struct reseau{
 machine * lstMachine;
-graphe graphe;
+graphe *graphe;
+int nbMachine;
 } reseau;
 
 void init_reseau(reseau *reseau);
 reseau* create_reseau();
-
+void afficherReseau(reseau *n);
 

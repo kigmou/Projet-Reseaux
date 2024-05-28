@@ -7,9 +7,11 @@
 void init_trame(trame *tr, mac *sourceP, mac *destinationP, char* messageP, short unsigned int typeP)
 {
     tr->destination = malloc(sizeof(mac));
+    //memcpy(tr->destination, destinationP,sizeof(mac));
+    tr->destination = destinationP;
     tr->source = malloc(sizeof(mac));
-    memcpy(tr->destination, destinationP,sizeof(mac));
-    memcpy(tr->source, sourceP,sizeof(mac));
+    tr->source = sourceP;
+    //memcpy(tr->source, sourceP,sizeof(mac));
     tr->type = typeP;
     strcpy(tr->donnees, messageP); 
     tr->FCS = 12345;
@@ -48,26 +50,26 @@ bool envoyer_trame(trame const *tr, graphe *g)
     int indexDepUltime = 0;
     for (size_t i = 0; i < g->ordre; i++)
     {
-        if (g->listeMachine[i]->type == STATION)
+        if (g->listeMachine[i].type == STATION)
         {
-            station *temp = (station *)g->listeMachine[i]->ptr;
+            station *temp = (station *)g->listeMachine[i].ptr;
             if (equals_AdrMac(temp->addrMac, tr->source))
             {
                 indexDep = i;
             }
-            if (equals_AdrMac(temp->addrMac, tr->destination))
+            else if(equals_AdrMac(temp->addrMac, tr->destination))
             {
                 indexArr = i;
             }
         }
         else
         {
-            Switch *temp = (Switch *)g->listeMachine[i]->ptr;
+            Switch *temp = (Switch *)g->listeMachine[i].ptr;
             if (equals_AdrMac(temp->addrMac, tr->source))
             {
                 indexDep = i;
             }
-            if (equals_AdrMac(temp->addrMac, tr->destination))
+            else if (equals_AdrMac(temp->addrMac, tr->destination))
             {
                 indexArr = i;
             }
@@ -78,46 +80,49 @@ bool envoyer_trame(trame const *tr, graphe *g)
         }
     }
     indexDepUltime=indexDep;
-    visite_composante_connexe_trame(g, indexDepUltime, indexDep, indexArr, visite, trouve);
+    visite_composante_connexe_trame(g, indexDepUltime, indexDep, indexArr, visite, trouve, indexDep);
     return false;
 }
 
-void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve)
-{
-    sommet sa[25];
-    if(!visite[s1] || !trouve)
+void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve, size_t oldS1)
+{   
+    size_t sa[25];
+    if(!visite[s1] && !trouve)
     {
         visite[s1] = true;
         if (s1 == s2)
         {
             trouve = true;
         }
-        if (g->listeMachine[sUltime]->type == STATION)
+        if (g->listeMachine[sUltime].type == STATION)
         {
-            station *structUltime = (station *)g->listeMachine[sUltime]->ptr;
-
-            if (g->listeMachine[s1]->type == SWITCH)
+            station *structUltime = (station *)g->listeMachine[sUltime].ptr;
+            if (g->listeMachine[s1].type == SWITCH)
             {
-                Switch *swTemp = (Switch *)g->listeMachine[s1]->ptr;
+                Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
                 // ajouter dans la table de commutation
-                ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, 100);
+                ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
             }
         }
         else
         {
-            Switch *structUltime = (Switch *)g->listeMachine[sUltime]->ptr;
-            if (g->listeMachine[s1]->type == SWITCH)
+            Switch *structUltime = (Switch *)g->listeMachine[sUltime].ptr;
+            if (g->listeMachine[s1].type == SWITCH)
             {
-                Switch *swTemp = (Switch *)g->listeMachine[s1]->ptr;
+                Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
                 // ajouter dans la table de commutation
-                ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, 100);
+                ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
             }
         }
-            sommets_adjacents(g, *g->listeMachine[s1], sa);
-            for(size_t i = 0; i<degre(g, *g->listeMachine[s1]); i++)
-            {
-                visite_composante_connexe_trame(g, sUltime, sa[i].numMachine ,s2, visite, trouve);
-            }
+        sommets_adjacents(g, g->listeMachine[s1], sa);
+        for(size_t k=0; k<degre(g, g->listeMachine[s1]); k++)
+        {
+            printf("index du sommet adj = %ld \n",sa[k]);
+        }
+        for(size_t i = 0; i<degre(g, g->listeMachine[s1]); i++)
+        {
+            visite_composante_connexe_trame(g, sUltime, sa[i] ,s2, visite, trouve, s1);
+        }
     }
     return;
 }
