@@ -90,6 +90,8 @@ reseau *create_reseau(){
                 //////////////PRIORITE//////////
 
                 ////////////TABLE DE COMMUT/////////////
+                tableCommutation *table = malloc(sizeof(tableCommutation));
+                init_tblCommut(table);
                 
                 ////////////TABLE DE COMMUT/////////////
 
@@ -101,7 +103,6 @@ reseau *create_reseau(){
         graphe *g=malloc(sizeof(graphe));
         init_graphe(g);
         tableCommutation *tableCommut = malloc(sizeof(tableCommutation));
-        init_tblCommut(tableCommut);
         
         for(int i=0;i<nbrLien;i++){
             
