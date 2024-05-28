@@ -7,7 +7,7 @@
 
 typedef struct tableCommutation {
     mac **addrMac;
-    unsigned int *numPort;
+    unsigned int numPort; ////////////A CHANGER PARTOUT
     unsigned int *ttl;
     size_t relations_capacite;
     size_t nb_relation;

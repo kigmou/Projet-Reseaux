@@ -3,34 +3,26 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "Mac_Adr.h"
+#include "trame.h"
 
 
 typedef struct trame
 {
-    sommet s1;
-    sommet s2;
-    unsigned int poids;
+    uint8_t preambule;
+    char SFD;
+    mac *destination;
+    mac *source;
+    short unsigned int type;
+    char donnees[1500]; 
+    char bourrage[46];
+    unsigned int FCS;
 } trame;
 
-typedef struct graphe
-{
-    size_t ordre;
-    arete *aretes;
-    size_t aretes_capacite;
-    size_t nb_aretes;
-} graphe;
+void init_trame(trame *tr, mac *sourceP, mac *destinationP, char* messageP, short unsigned int typeP);
+void free_trame(trame *tr);
 
-static const size_t UNKNOWN_INDEX = -1;
+mac* source(trame const *tr);
+mac* destination(trame const *tr);
 
-void init_graphe(graphe *g);
-void free_graphe(graphe *g);
-
-size_t ordre(graphe const *g);
-size_t nb_aretes(graphe const *g);
-
-void ajouter_sommet(graphe *g);
-bool existe_arete(graphe const *g, arete a);
-bool ajouter_arete(graphe *g, arete a);
-size_t index_arete(graphe const *g, arete a);
-
-size_t sommets_adjacents(graphe const *g, sommet s, sommet sa[]);
+bool envoyer_trame(trame const *tr);
