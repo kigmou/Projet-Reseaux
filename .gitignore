@@ -1,3 +1,8 @@
 # ignorer les fichiers .vs
 *.vs
+<<<<<<< HEAD
 .vscode
+=======
+*.o
+.vscode
+>>>>>>> Bilal
