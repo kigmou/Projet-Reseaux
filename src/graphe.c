@@ -49,6 +49,35 @@ bool existe_arete(graphe const *g, arete a)
     }
     return false;
 }
+bool init_Arete(graphe *g, char * input)
+{
+    if (input == NULL) {
+        return -1; 
+    }
+
+    char input_copy[100];
+    strncpy(input_copy, input, sizeof(input_copy));
+    input_copy[sizeof(input_copy) - 1] = '\0';
+
+    char *token = strtok(input_copy, ";");
+    if (token == NULL) return false;
+    sommet numDepart = (sommet)atoi(token);
+
+    token = strtok(NULL, ";");
+    if (token == NULL) return false;
+    sommet numArrive = (sommet)atoi(token);
+
+    token = strtok(NULL, ";");
+    if (token == NULL) return false;
+    unsigned int poid = (unsigned int)atoi(token);
+
+    arete *a = malloc(sizeof(arete));
+    a->s1 = numDepart;
+    a->s2 = numArrive;
+    a->poids = poid;
+
+    return ajouter_arete(g, *a);
+}
 
 bool ajouter_arete(graphe *g, arete a)
 {

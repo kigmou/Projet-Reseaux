@@ -59,7 +59,9 @@ bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsi
             void *a = realloc(tblc->addrMac, sizeof(mac) * tblc->relations_capacite * 2);
             void *n = realloc(tblc->numPort, sizeof(unsigned int) * tblc->relations_capacite * 2);
             void *t = realloc(tblc->ttl, sizeof(unsigned int) * tblc->relations_capacite * 2);
-            
+            free(tblc->addrMac);
+            free(tblc->numPort);
+            free(tblc->ttl);
             if (a && n && t)
             {
                 tblc->addrMac = a;
@@ -80,9 +82,6 @@ bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsi
             tblc->numPort[tblc->nb_relation] = numP;
             tblc->ttl[tblc->nb_relation] = TTL;
             tblc->nb_relation++;
-            printf("je suis la \n\n");
-            printf("%02x %u %u\n\n", addr->adresse[0], numP, TTL);
-            printf(" %u %u\n\n", tblc->numPort[tblc->nb_relation], tblc->ttl[tblc->nb_relation]);
             return true;
         }
     }

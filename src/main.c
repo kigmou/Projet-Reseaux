@@ -24,6 +24,7 @@ int main() {
     ajouter_relationConfig(tbl,"0;2;19", mac2);
     ajouter_relationConfig(tbl,"0;3;4", mac3);
     
+
     afficheSwitch(&sw);
     
     char *input2 = "1;54:d6:a6:82:c5:23;130.79.80.21";
@@ -61,5 +62,8 @@ int main() {
     freeStation(&st2);
     freeStation(&st3);
     freeSwitch(&sw);
+    free(mac1);
+    free(mac2);
+    free(mac3);
     return 0;
 }

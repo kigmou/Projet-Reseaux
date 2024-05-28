@@ -4,14 +4,13 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef size_t sommet;
 
-typedef struct arete
+typedef struct trame
 {
     sommet s1;
     sommet s2;
     unsigned int poids;
-} arete;
+} trame;
 
 typedef struct graphe
 {
