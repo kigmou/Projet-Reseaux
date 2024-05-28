@@ -29,7 +29,7 @@ reseau *create_reseau(){
     if(m==0) return NULL;
      int j=0;
      int temp=0;
-    while (j<nbrMachine) {
+        for(int i=0;i<nbrMachine;i++){   
         switch (type)
         {
             case '1':
@@ -88,20 +88,28 @@ reseau *create_reseau(){
                 switch_ptr->priorite =*prio;
                 free(prio);
                 //////////////PRIORITE//////////
+
+                ////////////TABLE DE COMMUT/////////////
+                
+                ////////////TABLE DE COMMUT/////////////
+
                 break;
             default:
                 printf("Type de machine inconnu : %c\n", type);
-                exit(1);
         }
+        }
+        graphe *g=malloc(sizeof(graphe));
+        init_graphe(g);
+        tableCommutation *tableCommut = malloc(sizeof(tableCommutation));
+        init_tblCommut(tableCommut);
         
+        for(int i=0;i<nbrLien;i++){
+            
+        }
         j++;
-    }
+    
 
     fclose(fichier);
-
-
-
-   
 }
 
 /*
