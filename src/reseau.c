@@ -34,14 +34,6 @@ reseau *create_reseau(){
 
     
     char type='0';
-<<<<<<< HEAD
-    int m =fscanf(fichier, "%c",&type);
-    if(m==0) return NULL;
-     int j=0;
-     int temp=0;
-    while (j<nbrMachine) {
-        switch (type)
-=======
     char line[32];
     int m = fscanf(fichier, "%c",&type);
     if(m==0) return NULL;
@@ -49,81 +41,21 @@ reseau *create_reseau(){
        char * f= fgets(line,32,fichier); 
        if(f == NULL) return NULL;
         switch (line[0])
->>>>>>> Bilal
         {
             case '1':
                //////////CREATION STATION//////////////
                 machine[i].type = STATION;
                 station *new_station = malloc(sizeof(station));
-<<<<<<< HEAD
-                machine[j].ptr = &new_station;
-                station *station_ptr = *(station**) machine[j].ptr;
-
-                /////////////ADRESSEMAC//////////////
-                unsigned char * adrMac = malloc(sizeof(mac));
-                temp=fscanf(fichier,";%hhx:%hhx:%hhx:%hhx:%hhx:%hhx;", &adrMac[0], &adrMac[1], &adrMac[2], &adrMac[3], &adrMac[4], &adrMac[5]);
-                if(temp==0) return NULL;
-                station_ptr->addrMac= malloc(sizeof(mac));
-                memcpy(station_ptr->addrMac, adrMac, sizeof(mac));
-                free(adrMac); 
-                /////////////ADRESSEMAC//////////////
-
-                ///////////// ADRESSEIP//////////////
-                char * adrIp= malloc(sizeof(ip));
-                temp =fscanf(fichier, "%hhu.%hhu.%hhu.%hhu", &adrIp[0], &adrIp[1], &adrIp[2], &adrIp[3]);
-                if(temp==0) return NULL;
-                station_ptr->addrIp= malloc(sizeof(ip));
-                memcpy(station_ptr->addrIp, adrIp, sizeof(ip));
-                free(adrIp);
-                ///////////// ADRESSEIP//////////////
-=======
                 machine[i].ptr = &new_station;
                 //station *station_ptr = *(station**) machine[j].ptr;
                 init_Station(new_station,line);
                //////////CREATION STATION///////////
             
->>>>>>> Bilal
                 
                 break;
             case '2':
                 machine[i].type = SWITCH;
                 Switch *new_switch = malloc(sizeof(Switch));
-<<<<<<< HEAD
-                machine[j].ptr = &new_switch;
-                Switch *switch_ptr = *(Switch**)machine[j].ptr;
-                /////////////ADRESSEMAC//////////////
-                unsigned char * mac1 = malloc(sizeof(mac));
-                temp =fscanf(fichier,";%hhx:%hhx:%hhx:%hhx:%hhx:%hhx;", &mac1[0], &mac1[1], &mac1[2], &mac1[3], &mac1[4], &mac1[5]);
-                if(temp==0) return NULL;
-                switch_ptr->addrMac= malloc(sizeof(mac));
-                 memcpy(switch_ptr->addrMac, mac1, sizeof(mac));
-                free(mac1);
-                /////////////ADRESSEMAC//////////////
-
-
-                //////////////PORT///////////////
-                unsigned int *port =malloc(sizeof(unsigned int));
-                temp = fscanf(fichier,"%u;",port);
-                if(temp==0) return NULL;
-                switch_ptr->nbPorts = *port;
-                free(port);
-                //////////////PORT///////////////
-                
-                //////////////PRIORITE//////////
-                long int *prio=malloc(sizeof(long int));
-                temp=fscanf(fichier,"%li",prio);
-                if(temp==0) return NULL;
-                switch_ptr->priorite =*prio;
-                free(prio);
-                //////////////PRIORITE//////////
-                break;
-            default:
-                printf("Type de machine inconnu : %c\n", type);
-                exit(1);
-        }
-        
-        j++;
-=======
                 machine[i].ptr = &new_switch;
                // Switch *switch_ptr = *(Switch**)machine[j].ptr;
                 
@@ -132,7 +64,6 @@ reseau *create_reseau(){
             default:
                 printf("Type de machine inconnu : %c\n", type);
         }
->>>>>>> Bilal
     }
 
     graphe *g=malloc(sizeof(graphe));
@@ -148,11 +79,6 @@ reseau *create_reseau(){
         
     for(int i=0;i<nbrMachine;i++) ajouter_sommet(g);
 
-<<<<<<< HEAD
-
-
-   
-=======
     int indexSommet1;
     int indexSommet2;
     int poids;
@@ -199,7 +125,6 @@ reseau *create_reseau(){
     ////////////////FREE/////////////////////:::
 
     return n;
->>>>>>> Bilal
 }
 
 /*
