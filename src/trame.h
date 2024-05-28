@@ -5,12 +5,13 @@
 #include <string.h>
 #include "Mac_Adr.h"
 #include "trame.h"
+#include "graphe.h"
 
 
 typedef struct trame
 {
-    uint8_t preambule;
-    char SFD;
+    long long int preambule;
+    uint8_t SFD;
     mac *destination;
     mac *source;
     short unsigned int type;
@@ -25,4 +26,4 @@ void free_trame(trame *tr);
 mac* source(trame const *tr);
 mac* destination(trame const *tr);
 
-bool envoyer_trame(trame const *tr);
+bool envoyer_trame(trame const *tr, graphe *g);

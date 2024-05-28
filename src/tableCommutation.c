@@ -49,7 +49,7 @@ void freeTblCommut(tableCommutation* tblC)
     unsigned int TimeToLive = (unsigned int)atoi(token);
     return ajouter_relation(tblc, addr, numeroPort, TimeToLive);
 }*/
-bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsigned int TTL)
+bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int TTL)
 {
     if (!existe_relation(tblc, addr, numP, TTL))
     {

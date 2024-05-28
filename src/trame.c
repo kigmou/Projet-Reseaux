@@ -14,8 +14,8 @@ void init_trame(trame *tr, mac *sourceP, mac *destinationP, char* messageP, shor
     strcpy(tr->donnees, messageP); 
     tr->FCS = 12345;
     tr->bourrage[48];
-    /*tr->preambule;
-    tr->SFD;*/
+    tr->preambule = 0b10101010101010101010101010101010101010101010101010101010;
+    tr->SFD=0b10101011;
 }
 
 void free_trame(trame *tr)
@@ -27,15 +27,16 @@ void free_trame(trame *tr)
 
 mac* source(trame const *tr)
 {
-    return NULL;
+    return tr->source;
 }
 
 mac* destination(trame const *tr)
 {
-    return NULL;
+    return tr->destination;
 }
 
-bool envoyer_trame(trame const *tr)
+bool envoyer_trame(trame const *tr, graphe *g)
 {
+    
     return false;
 }

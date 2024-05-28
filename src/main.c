@@ -12,17 +12,6 @@ int main() {
     } else {
         printf("Le switch n'a pas pu être initialisé.\n");
     }
-
-    char *inputM1="54:d6:a6:82:c5:23";
-    char *inputM2="c8:69:72:5e:43:af";
-    char *inputM3="77:ac:d6:82:12:23";
-    mac *mac1 = init_macAddr(inputM1);
-    mac *mac2 = init_macAddr(inputM2);
-    mac *mac3 = init_macAddr(inputM3);
-    tableCommutation *tbl = sw.tblCommutation;
-    ajouter_relationConfig(tbl,"0;1;4", mac1);
-    ajouter_relationConfig(tbl,"0;2;19", mac2);
-    ajouter_relationConfig(tbl,"0;3;4", mac3);
     
 
     afficheSwitch(&sw);
@@ -62,8 +51,5 @@ int main() {
     freeStation(&st2);
     freeStation(&st3);
     freeSwitch(&sw);
-    free(mac1);
-    free(mac2);
-    free(mac3);
     return 0;
 }
