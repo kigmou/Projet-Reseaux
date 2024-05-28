@@ -31,39 +31,36 @@ size_t nb_aretes(graphe const *g)
 
 void ajouter_sommet(graphe *g, machine *m)
 {
-        if (g->ordre == g->machine_capacite)
+    if (g->ordre == g->machine_capacite)
+    {
+        void *p = realloc(g->listeMachine, sizeof(machine) * g->machine_capacite * 2);
+        if (p)
         {
-            void *p = realloc(g->listeMachine, sizeof(machine) * g->machine_capacite * 2);
-            if (p)
-            {
-                g->aretes = p;
-                g->machine_capacite = g->machine_capacite * 2;
-            }
-        }
-        if (g->aretes_capacite > g->nb_aretes)
-        {
-            g->aretes[g->nb_aretes] = a;
-            g->nb_aretes++;
-            return;
+            g->listeMachine = p;
+            g->machine_capacite = g->machine_capacite * 2;
         }
     }
-    g->ordre++;
+    if (g->machine_capacite > g->ordre)
+    {
+        g->listeMachine[g->ordre] = m;
+        g->ordre++;
+    }
     return;
 }
 
 static arete swap_arete(arete a)
 {
-    return (arete){a.s2, a.s1};
+    return (arete){a.s2, a.s1, a.poids};
 }
 
 bool existe_arete(graphe const *g, arete a)
 {
-    if (a.s1 > a.s2)
+    if (a.s1.numMachine > a.s2.numMachine)
         a = swap_arete(a);
     for (size_t i = 0; i < nb_aretes(g); i++)
     {
         arete aa = g->aretes[i];
-        if (a.s1 == aa.s1 && a.s2 == aa.s2)
+        if (a.s1.numMachine == aa.s1.numMachine && a.s2.numMachine == aa.s2.numMachine)
             return true;
     }
     return false;
@@ -80,19 +77,19 @@ bool init_Arete(graphe *g, char * input)
 
     char *token = strtok(input_copy, ";");
     if (token == NULL) return false;
-    sommet numDepart = (sommet)atoi(token);
+    size_t IndexNumDepart = (size_t)atoi(token);
 
     token = strtok(NULL, ";");
     if (token == NULL) return false;
-    sommet numArrive = (sommet)atoi(token);
+    size_t IndexNumArrive = (size_t)atoi(token);
 
     token = strtok(NULL, ";");
     if (token == NULL) return false;
     unsigned int poid = (unsigned int)atoi(token);
 
     arete *a = malloc(sizeof(arete));
-    a->s1 = numDepart;
-    a->s2 = numArrive;
+    a->s1 = *g->listeMachine[IndexNumDepart];
+    a->s2 = *g->listeMachine[IndexNumArrive];
     a->poids = poid;
 
     return ajouter_arete(g, *a);
@@ -100,9 +97,9 @@ bool init_Arete(graphe *g, char * input)
 
 bool ajouter_arete(graphe *g, arete a)
 {
-    if (a.s1 >= ordre(g) || a.s2 >= ordre(g) || a.s1 == a.s2)
+    if (a.s1.numMachine >= ordre(g) || a.s2.numMachine >= ordre(g) || a.s1.numMachine == a.s2.numMachine)
         return false;
-    if (a.s1 > a.s2)
+    if (a.s1.numMachine > a.s2.numMachine)
         a = swap_arete(a);
     if (!existe_arete(g, a))
     {
@@ -127,12 +124,12 @@ bool ajouter_arete(graphe *g, arete a)
 
 size_t index_arete(graphe const *g, arete a)
 {
-    if (a.s1 > a.s2)
+    if (a.s1.numMachine > a.s2.numMachine)
         a = swap_arete(a);
     for (size_t i = 0; i < nb_aretes(g); i++)
     {
         arete aa = g->aretes[i];
-        if (a.s1 == aa.s1 && a.s2 == aa.s2)
+        if (a.s1.numMachine == aa.s1.numMachine && a.s2.numMachine == aa.s2.numMachine)
             return i;
     }
     return UNKNOWN_INDEX;
@@ -140,16 +137,35 @@ size_t index_arete(graphe const *g, arete a)
 
 size_t sommets_adjacents(graphe const *g, sommet s, sommet sa[])
 {
-    if (s >= ordre(g))
+    if (s.numMachine >= ordre(g))
         return 0;
     size_t nb = 0;
     for (size_t i = 0; i < nb_aretes(g); i++)
     {
         arete a = g->aretes[i];
-        if (a.s1 == s)
+        if (a.s1.numMachine == s.numMachine)
             sa[nb++] = a.s2;
-        else if (a.s2 == s)
+        else if (a.s2.numMachine == s.numMachine)
             sa[nb++] = a.s1;
     }
     return nb;
 }
+
+size_t degre(graphe const *g, sommet s)
+{
+    //meme fonction que sommet adjacents sauf sans sa[]
+    size_t compteur = 0;
+    for(size_t i = 0; i< g->nb_aretes; i++)
+    {
+        if (g->aretes[i].s1.numMachine==s.numMachine)
+        {
+            compteur++;
+        }
+        else if (g->aretes[i].s2.numMachine==s.numMachine)
+        {
+            compteur++;
+        }
+    }
+    return compteur;
+}
+

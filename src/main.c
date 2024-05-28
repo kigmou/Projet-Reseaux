@@ -46,7 +46,11 @@ int main() {
     afficheStation(&st);
     afficheStation(&st2);
     afficheStation(&st3);
-
+    trame *temp =(temp*)malloc(sizeof(temp));
+    mac *sourceP =st->;
+    mac *destinationP;
+    char* messageP;
+    short unsigned int typeP;
     freeStation(&st);
     freeStation(&st2);
     freeStation(&st3);
