@@ -1,2 +1,4 @@
 # ignorer les fichiers .vs
 *.vs
+*.o
+.vscode
