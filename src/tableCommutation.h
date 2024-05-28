@@ -17,6 +17,5 @@ typedef struct tableCommutation {
 int init_tblCommut(tableCommutation *tblC);
 void afficheTblCommut(tableCommutation* tblC);
 void freeTblCommut(tableCommutation* tblC);
-bool ajouter_relationConfig(tableCommutation *tblc, const char *input, mac *addr);
 bool ajouter_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsigned int TTL);
 bool existe_relation(tableCommutation *tblc, mac *addr, unsigned int numP, unsigned int TTL);
