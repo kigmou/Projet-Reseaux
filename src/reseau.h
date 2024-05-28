@@ -5,6 +5,8 @@
 #include "machine.h"
 #include "Ip_Adr.h"
 #include "graphe.h"
+#include "station.h"
+#include "switch.h"
 #include <string.h>
 
 
