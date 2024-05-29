@@ -88,46 +88,103 @@ bool envoyer_trame(trame const *tr, graphe *g)
 void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve, bool complet, size_t oldS1)
 {   
     size_t sa[25];
-
-    /*if(!visite[s1] && !trouve)
-    {  
-        for(int i=0; i<10; i++)
-        {
-
-        }
-    }*/
-    
-    if(!visite[s1] && !trouve)
+    if(!visite[s1] && !complet)
     {
-        visite[s1] = true;
+        bool doitVisiter = true;
+        if(!visite[s1] && !trouve)
+        {  
+            visite[s1] = true;
+            if(s1 == s2)
+            {
+                trouve = true;
+            }
+            else if (g->listeMachine[s2].type == STATION && g->listeMachine[s1].type == SWITCH)
+            {
+                station *structUltime = (station *)g->listeMachine[s2].ptr;
+                Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
+                for(size_t l=0; l<swTemp->tblCommutation->nb_relation; l++)
+                {
+                    if(swTemp->tblCommutation->addrMac[l]==structUltime->addrMac)
+                    {
+                        if (g->listeMachine[sUltime].type == STATION)
+                        {
+                            station *structUltimeVrai = (station *)g->listeMachine[sUltime].ptr;
+                            ajouter_relation(swTemp->tblCommutation, structUltimeVrai->addrMac, oldS1, 100);
+                        }
+                        else
+                        {
+                            Switch *structUltimeVrai = (Switch *)g->listeMachine[sUltime].ptr;
+                            ajouter_relation(swTemp->tblCommutation, structUltimeVrai->addrMac, oldS1, 100);
+                        }
+                        visite_composante_connexe_trame(g, sUltime, swTemp->tblCommutation->numMachineLie[l], s2, visite, trouve, complet, s1);
+                        doitVisiter=false;
+                        return;
+                    }
+                }
+            }
+            else if(g->listeMachine[s2].type == SWITCH && g->listeMachine[s1].type == SWITCH)
+            {
+                Switch *structUltime = (Switch *)g->listeMachine[s2].ptr;
+                Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
+                for(size_t l=0; l<swTemp->tblCommutation->nb_relation; l++)
+                {
+                    if(equals_AdrMac(swTemp->tblCommutation->addrMac[l],structUltime->addrMac))
+                    {
+                        if (g->listeMachine[sUltime].type == STATION)
+                        {
+                            station *structUltimeVrai = (station *)g->listeMachine[sUltime].ptr;
+                            ajouter_relation(swTemp->tblCommutation, structUltimeVrai->addrMac, oldS1, 100);
+                        }
+                        else
+                        {
+                            Switch *structUltimeVrai = (Switch *)g->listeMachine[sUltime].ptr;
+                            ajouter_relation(swTemp->tblCommutation, structUltimeVrai->addrMac, oldS1, 100);
+                        }
+                        visite_composante_connexe_trame(g, sUltime, swTemp->tblCommutation->numMachineLie[l], s2, visite, trouve, complet, s1);
+                        doitVisiter=false;
+                        return;
+                    }
+                }
+            }
+        }
+        complet =true;
+        for(size_t l=0; l<g->ordre; l++)
+        {
+            if(visite[l]==false)
+            {
+                complet =false;
+                break;
+            }
+        }
         if (s1 == s2)
         {
             trouve = true;
         }
-        if (g->listeMachine[sUltime].type == STATION)
+        if(doitVisiter)
         {
-            station *structUltime = (station *)g->listeMachine[sUltime].ptr;
-            if (g->listeMachine[s1].type == SWITCH)
+            if (g->listeMachine[sUltime].type == STATION)
             {
-                Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
-                // ajouter dans la table de commutation
-                ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
+                station *structUltime = (station *)g->listeMachine[sUltime].ptr;
+                if (g->listeMachine[s1].type == SWITCH)
+                {
+                    Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
+                    ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
+                }
             }
-        }
-        else if(g->listeMachine[sUltime].type == SWITCH)
-        {
-            Switch *structUltime = (Switch *)g->listeMachine[sUltime].ptr;
-            if (g->listeMachine[s1].type == SWITCH)
+            else if(g->listeMachine[sUltime].type == SWITCH)
             {
-                Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
-                // ajouter dans la table de commutation
-                ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
+                Switch *structUltime = (Switch *)g->listeMachine[sUltime].ptr;
+                if (g->listeMachine[s1].type == SWITCH)
+                {
+                    Switch *swTemp = (Switch *)g->listeMachine[s1].ptr;
+                    ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
+                }
             }
-        }
-        sommets_adjacents(g, g->listeMachine[s1], sa);
-        for(size_t i = 0; i<degre(g, g->listeMachine[s1]); i++)
-        {
-            visite_composante_connexe_trame(g, sUltime, sa[i] ,s2, visite, trouve, complet, s1);
+            sommets_adjacents(g, g->listeMachine[s1], sa);
+            for(size_t i = 0; i<degre(g, g->listeMachine[s1]); i++)
+            {
+                visite_composante_connexe_trame(g, sUltime, sa[i] ,s2, visite, trouve, complet, s1);
+            }
         }
     }
     return;

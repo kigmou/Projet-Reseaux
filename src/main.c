@@ -60,24 +60,30 @@ int main() {
     //afficherReseau(res);
 
     trame *temp =malloc(sizeof(trame));
-    station *structEnvoie = (station *)res->graphe->listeMachine[13].ptr;
+    station *structEnvoie = (station *)res->graphe->listeMachine[7].ptr;
     station *structRecoit = (station *)res->graphe->listeMachine[14].ptr;
     mac *sourceP =get_mac_station(structEnvoie);
     mac *destinationP=get_mac_station(structRecoit);
     char messageP[1500]="mon gros caca la";
     short unsigned int typeP=2;
     init_trame(temp, sourceP, destinationP, messageP, typeP);
+    printf("\n ENVOYE TRAME 1 \n");
     envoyer_trame(temp, res->graphe);
+    printf("\n FIN ENVOYE TRAME 1 \n");
     //afficherReseau(res);
+    
     trame *temp2 =malloc(sizeof(trame));
     station *structEnvoie2 = (station *)res->graphe->listeMachine[14].ptr;
-    station *structRecoit2 = (station *)res->graphe->listeMachine[13].ptr;
+    station *structRecoit2 = (station *)res->graphe->listeMachine[7].ptr;
     mac *sourceP2 =get_mac_station(structEnvoie2);
     mac *destinationP2=get_mac_station(structRecoit2);
     char messageP2[1500]="mon gros caca la2";
     short unsigned int typeP2=2;
     init_trame(temp2, sourceP2, destinationP2, messageP2, typeP2);
+    printf("\n ENVOYE TRAME 2 \n");
     envoyer_trame(temp2, res->graphe);
+    printf("\n FIN ENVOYE TRAME 2 \n");
+
     afficherReseau(res);
     return 0;
 }
