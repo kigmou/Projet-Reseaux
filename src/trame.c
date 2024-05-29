@@ -45,6 +45,7 @@ bool envoyer_trame(trame const *tr, graphe *g)
         visite[j]=false;
     }
     bool trouve=false;
+    bool complet=false;
     int indexDep = -1;
     int indexArr = -1;
     int indexDepUltime = 0;
@@ -80,13 +81,22 @@ bool envoyer_trame(trame const *tr, graphe *g)
         }
     }
     indexDepUltime=indexDep;
-    visite_composante_connexe_trame(g, indexDepUltime, indexDep, indexArr, visite, trouve, indexDep);
+    visite_composante_connexe_trame(g, indexDepUltime, indexDep, indexArr, visite, trouve, complet, indexDep);
     return false;
 }
 
-void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve, size_t oldS1)
+void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size_t s1, size_t s2, bool *visite, bool trouve, bool complet, size_t oldS1)
 {   
     size_t sa[25];
+
+    /*if(!visite[s1] && !trouve)
+    {  
+        for(int i=0; i<10; i++)
+        {
+
+        }
+    }*/
+    
     if(!visite[s1] && !trouve)
     {
         visite[s1] = true;
@@ -104,7 +114,7 @@ void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size
                 ajouter_relation(swTemp->tblCommutation, structUltime->addrMac, oldS1, 100);
             }
         }
-        else
+        else if(g->listeMachine[sUltime].type == SWITCH)
         {
             Switch *structUltime = (Switch *)g->listeMachine[sUltime].ptr;
             if (g->listeMachine[s1].type == SWITCH)
@@ -115,13 +125,9 @@ void visite_composante_connexe_trame(graphe const *g, const size_t sUltime, size
             }
         }
         sommets_adjacents(g, g->listeMachine[s1], sa);
-        for(size_t k=0; k<degre(g, g->listeMachine[s1]); k++)
-        {
-            printf("index du sommet adj = %ld \n",sa[k]);
-        }
         for(size_t i = 0; i<degre(g, g->listeMachine[s1]); i++)
         {
-            visite_composante_connexe_trame(g, sUltime, sa[i] ,s2, visite, trouve, s1);
+            visite_composante_connexe_trame(g, sUltime, sa[i] ,s2, visite, trouve, complet, s1);
         }
     }
     return;
