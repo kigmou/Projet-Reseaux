@@ -57,21 +57,21 @@ int main() {
     reseau *res=(reseau*)malloc(sizeof(reseau));
     init_reseau(res);
     res=create_reseau();
-    afficherReseau(res);
+    //afficherReseau(res);
 
     trame *temp =malloc(sizeof(trame));
-    station *structEnvoie = (station *)res->graphe->listeMachine[1].ptr;
-    station *structRecoit = (station *)res->graphe->listeMachine[2].ptr;
+    station *structEnvoie = (station *)res->graphe->listeMachine[13].ptr;
+    station *structRecoit = (station *)res->graphe->listeMachine[14].ptr;
     mac *sourceP =get_mac_station(structEnvoie);
     mac *destinationP=get_mac_station(structRecoit);
     char messageP[1500]="mon gros caca la";
     short unsigned int typeP=2;
     init_trame(temp, sourceP, destinationP, messageP, typeP);
     envoyer_trame(temp, res->graphe);
-    afficherReseau(res);
+    //afficherReseau(res);
     trame *temp2 =malloc(sizeof(trame));
-    station *structEnvoie2 = (station *)res->graphe->listeMachine[3].ptr;
-    station *structRecoit2 = (station *)res->graphe->listeMachine[1].ptr;
+    station *structEnvoie2 = (station *)res->graphe->listeMachine[14].ptr;
+    station *structRecoit2 = (station *)res->graphe->listeMachine[13].ptr;
     mac *sourceP2 =get_mac_station(structEnvoie2);
     mac *destinationP2=get_mac_station(structRecoit2);
     char messageP2[1500]="mon gros caca la2";

@@ -98,12 +98,8 @@ bool init_Arete(graphe *g, char * input)
 
 bool ajouter_arete(graphe *g, arete a)
 {
-    printf("On est la________ ordre = %lu \n",ordre(g));
-    printf("a.s1.numMachine = %lu\n",a.s1.numMachine);
-    printf("a.s2.numMachine = %lu\n",a.s2.numMachine);
     if (a.s1.numMachine >= ordre(g) || a.s2.numMachine >= ordre(g) || a.s1.numMachine == a.s2.numMachine)
         return false;
-    printf("On est la________V2");
 
     if (a.s1.numMachine > a.s2.numMachine)
         a = swap_arete(a);
