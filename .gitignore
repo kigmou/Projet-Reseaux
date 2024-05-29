@@ -1,8 +1,7 @@
 # ignorer les fichiers .vs
 *.vs
-<<<<<<< HEAD
-.vscode
-=======
 *.o
 .vscode
->>>>>>> Bilal
+*.vscode
+*.idea
+.idea

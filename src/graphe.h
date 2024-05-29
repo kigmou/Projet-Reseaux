@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
-#include <machine.h>
+#include "machine.h"
 
 typedef machine sommet;
 
