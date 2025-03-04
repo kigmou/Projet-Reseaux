@@ -1,6 +1,6 @@
 # Projet de réseau local en C
 
-!image(/téléchargement.jpg,"")
+![Image Illustartion](https://github.com/kigmou/Projet-Reseaux/blob/main/t%C3%A9l%C3%A9chargement.jpg)
 
 ## Description
 
